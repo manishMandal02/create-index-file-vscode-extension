@@ -1,71 +1,78 @@
-# create-index README
+<img src="https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png"
+  width="128"
+  height="128"
+  style="float:left;">
 
-This is the README for your extension "create-index". After writing up a brief description, we recommend including the following sections.
+# Create Index File VS Code
 
-## Features
+Create index export file for .js/ts or .jsx/tsx files in the current folder
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+```
+example:
+        |
+        |- elements
+            |- Button.tsx
+            |- Modal.tsx
+            |- Modal.tsx
 
-For example if there is an image subfolder under your extension project workspace:
+ If you execute Create Index File command in any of the files
+ inside elements folder it will create index.ts
 
-\!\[feature X\]\(images/feature-x.png\)
+result: new file (index.ts) inside elements folder
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+    index.ts
 
-## Requirements
+    export { default } from ./Button
+    export { default } from ./Modal
+    export { default } from ./Modal
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
-## Extension Settings
+```
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## Installation
 
-For example:
+Add extension to VS code
 
-This extension contributes the following settings:
+```bash
+    2. Search for Create Index File
+    3. Check for extension with manish as author name
+    4. Click Install
+```
 
-- `myExtension.enable`: Enable/disable this extension.
-- `myExtension.thing`: Set to `blah` to do something.
+VS code marketplace link: https://marketplace.visualstudio.com/vscode
 
-## Known Issues
+## Run Locally
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Clone the project
 
-## Release Notes
+```bash
+  git clone https://github.com/manishMandal02/create-index-vscode-extension
+```
 
-Users appreciate release notes as you update your extension.
+Go to the project directory
 
-### 1.0.0
+```bash
+  cd my-project
+```
 
-Initial release of ...
+Install dependencies
 
-### 1.0.1
+```bash
+  yarn
+```
 
-Fixed issue #.
+Start the dev server
 
-### 1.1.0
+```bash
+  yarn run watch
+```
 
-Added features X, Y, and Z.
+Debug extension (opens new window with extension insalled)
 
----
+```bash
+  press F5
+```
 
-## Following extension guidelines
+## Authors
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-- [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-- Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-- Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-- Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-- [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-- [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+- [@manishMandal02](https://github.com/manishMandal02)
