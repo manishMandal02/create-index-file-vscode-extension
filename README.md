@@ -1,12 +1,6 @@
-<img src="https://res.cloudinary.com/mandal/image/upload/v1701953365/create-index-vscode/create-index-icon.png"
-  width="80"
-  height="80"
-  style="float:left; margin-top:12px;margin-right:10px;">
-
 # Create Index File VS Code
 
 Create index export file for .js/ts or .jsx/tsx files in the current folder
-
 
 ```
 example:

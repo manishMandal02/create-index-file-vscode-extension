@@ -1,8 +1,8 @@
 {
-  "name": "create-index-file",
-  "displayName": "Create Index File",
+  "name": "generate-index-file",
+  "displayName": "Generate Index File",
   "description": "Create index export file for .js/ts or .jsx/tsx files in the current folder",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.84.0"
   },
@@ -13,11 +13,17 @@
   ],
   "icon": "./icon-256.png",
   "galleryBanner": {
-    "color": "#BE63F9",
+    "color": "#160223",
     "theme": "dark"
   },
-  "publisher": "manish",
-  "keywords": "['create', 'index', 'export', 'file', 'react']",
+  "publisher": "manishmandal",
+  "keywords": [
+    "create",
+    "index",
+    "export",
+    "file",
+    "react"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/manishMandal02/create-index-vscode-extension"
@@ -31,8 +37,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "create-index-file.run",
-        "title": "Create Index File"
+        "command": "generate-index-file.run",
+        "title": "Generate Index File"
       }
     ]
   },

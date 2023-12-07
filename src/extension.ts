@@ -12,16 +12,15 @@ export function activate(context: vscode.ExtensionContext) {
   // The command has been defined in the package.json file
   // Now provide the implementation of the command with registerCommand
   // The commandId parameter must match the command field in package.json
-  const disposable = vscode.commands.registerCommand('create-index-file.run', () => {
-    // The code you place here will be executed every time your command is executed
-    // Display a message box to the user
-    // vscode.window.showInformationMessage('Hello from CreateIndex!');
+  const disposable = vscode.commands.registerCommand('generate-index-file.run', () => {
+    // run app
     createIndexFile();
   });
 
   context.subscriptions.push(disposable);
 }
 
+// create index file handler
 const createIndexFile = () => {
   const activeEditor = vscode.window.activeTextEditor;
 
@@ -31,6 +30,7 @@ const createIndexFile = () => {
   }
 
   const currentFilePath = activeEditor.document.uri.fsPath;
+
   const pathToCurrentFolder = path.dirname(currentFilePath);
 
   const currentFolder = path.basename(pathToCurrentFolder);
@@ -92,10 +92,10 @@ const createIndexFile = () => {
 
   // show success notification
   infoLogger(`index file created in /${currentFolder}`);
-
-  // -end
 };
+// -end create index file handler
 
+// check file export types
 const checkFileExportTypes = (filePath: string) => {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
   // checks for export default statement in the file
@@ -107,7 +107,6 @@ const checkFileExportTypes = (filePath: string) => {
 // create new file with content
 const createNewFile = (filePath: string, content: string[]) => {
   fs.writeFileSync(filePath, content.join('\n'));
-  return;
 };
 
 // info logger
