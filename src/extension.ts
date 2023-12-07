@@ -33,9 +33,11 @@ const createIndexFile = () => {
   }
 
   const currentFilePath = activeEditor.document.uri.fsPath;
-  const currentPath = path.dirname(currentFilePath);
+  const pathToCurrentFolder = path.dirname(currentFilePath);
 
-  const filesInFolder = fs.readdirSync(currentPath);
+  const currentFolder = path.basename(pathToCurrentFolder);
+
+  const filesInFolder = fs.readdirSync(pathToCurrentFolder);
 
   const supportedFileExt = ['.js', '.ts', '.jsx', '.tsx'];
 
@@ -44,7 +46,7 @@ const createIndexFile = () => {
   const filesWithSupportedExt: string[] = [];
 
   for (const file of filesInFolder) {
-    const fileExt = path.extname(file);
+    const fileExt = path.parse(file).ext;
     if (fileExt && supportedFileExt.includes(fileExt)) {
       filesWithSupportedExt.push(file);
     }
@@ -56,33 +58,56 @@ const createIndexFile = () => {
     return;
   }
 
-  // create index file: with file names and export * from file names
+  // check if index file already exists
+  const doesIndexFileExist = fs.existsSync(path.join(pathToCurrentFolder, 'index.ts'));
 
+  if (doesIndexFileExist) {
+    infoLogger(`Index file already exists at /${currentFolder}`);
+
+    return;
+  }
+
+  // create index file: with file names and exports from files
   const fileContent: string[] = [];
 
   for (const file of filesWithSupportedExt) {
-    const fileName = path.basename(file);
-    fileContent.push(`export * from './${fileName}';`);
+    const fileName = path.parse(file).name;
+
+    // check file export types (default, named)
+    const { hasDefaultExport, hasNamedExports } = checkFileExportTypes(path.join(pathToCurrentFolder, file));
+
+    if (hasDefaultExport) {
+      fileContent.push(`export { default } from './${fileName}';`);
+    }
+
+    if (hasNamedExports) {
+      fileContent.push(`export * from './${fileName}';`);
+    }
   }
 
-  const indexFilePath = path.join(currentPath, 'index.ts');
+  // file extension for index file
+  const indexFileExt = path.extname(filesWithSupportedExt[0]).includes('t') ? 'ts' : 'js';
+
+  const indexFilePath = path.join(pathToCurrentFolder, `index.${indexFileExt}`);
   // create index file
   createNewFile(indexFilePath, fileContent);
 
   // show success notification
-  infoLogger(`index file created in /${path.basename(currentPath)}`);
+  infoLogger(`index file created in /${currentFolder}`);
 
   // -end
 };
 
-const createNewFile = (filePath: string, content: string[]) => {
-  // check if file exists
-  if (fs.existsSync(filePath)) {
-    infoLogger('Index file already exists.');
-    return;
-  }
+const checkFileExportTypes = (filePath: string) => {
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  // checks for export default statement in the file
+  const hasDefaultExport = /\bexport\s+default\s+(function|class|\w+|[^;]+);/.test(fileContent);
+  const hasNamedExports = /\bexport\s+(const|function|class|\{|\*)\s+[^;]+\s*(}|from)?/.test(fileContent);
+  return { hasDefaultExport, hasNamedExports };
+};
 
-  // create new file with content
+// create new file with content
+const createNewFile = (filePath: string, content: string[]) => {
   fs.writeFileSync(filePath, content.join('\n'));
   return;
 };
