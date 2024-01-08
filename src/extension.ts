@@ -57,19 +57,25 @@ const createIndexFile = () => {
   }
 
   // check if index file already exists
+
   const doesIndexFileExist = fs.existsSync(path.join(pathToCurrentFolder, 'index.ts'));
 
   if (doesIndexFileExist) {
-    infoLogger(`Index file already exists at /${currentFolder}`);
-
-    return;
+    // check if the index file exists and if it is used only for only for exporting then re-rewrite
+    if (!isIndexFileUsedForExport(path.join(pathToCurrentFolder, 'index.ts'))) {
+      infoLogger(`Index file already exists at /${currentFolder}`);
+      return;
+    }
   }
 
   // create index file: with file names and exports from files
-  const fileContent: string[] = [];
+  let fileContent: string[] = [];
 
   for (const file of filesWithSupportedExt) {
     const fileName = path.parse(file).name;
+
+    // skip index file
+    if (fileName === 'index') continue;
 
     // check file export types (default, named)
     const { hasDefaultExport, hasNamedExports } = checkFileExportTypes(path.join(pathToCurrentFolder, file));
@@ -81,6 +87,21 @@ const createIndexFile = () => {
     if (hasNamedExports) {
       fileContent.push(`export * from './${fileName}';`);
     }
+  }
+
+  //  check if multiple default exports statement used
+  const hasMultipleDefaultExport =
+    fileContent.filter(statement => statement.includes('default'))?.length > 1 || false;
+
+  if (hasMultipleDefaultExport) {
+    // change the "default" export statements to "default as"
+    fileContent = fileContent.map(statement => {
+      if (statement.includes('default')) {
+        const fileName = statement.split('/')[1].split("'")[0];
+        return `export { default as ${fileName} } from './${fileName}';`;
+      }
+      return statement;
+    });
   }
 
   // file extension for index file
@@ -95,6 +116,22 @@ const createIndexFile = () => {
 };
 // -end create index file handler
 
+// check if the existing index file is used only for exports
+
+const isIndexFileUsedForExport = (indexFile: string) => {
+  // Read the content of the file
+  const indexFileContent = fs.readFileSync(indexFile, 'utf-8');
+
+  // Check for import statements
+  const hasImports = /import\s+/g.test(indexFileContent);
+
+  // Check for other statement (function declarations, arrow functions, variable declarations)
+  const hasOtherCodes = /(function|const|let|var|=>)\s+/g.test(indexFileContent);
+
+  // If there are imports or non-exported code, the file may have additional logic
+  return !hasImports && !hasOtherCodes;
+};
+
 // check file export types
 const checkFileExportTypes = (filePath: string) => {
   const fileContent = fs.readFileSync(filePath, 'utf-8');
@@ -106,7 +143,7 @@ const checkFileExportTypes = (filePath: string) => {
 
 // create new file with content
 const createNewFile = (filePath: string, content: string[]) => {
-  fs.writeFileSync(filePath, content.join('\n'));
+  fs.writeFileSync(filePath, content.join('\n \n'));
 };
 
 // info logger
