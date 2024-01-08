@@ -2,7 +2,7 @@
   "name": "generate-index-file",
   "displayName": "Generate Index File",
   "description": "Create index export file for .js/ts or .jsx/tsx files in the current folder",
-  "version": "1.0.2",
+  "version": "1.2.0",
   "engines": {
     "vscode": "^1.84.0"
   },
