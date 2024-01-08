@@ -60,12 +60,10 @@ const createIndexFile = () => {
 
   const doesIndexFileExist = fs.existsSync(path.join(pathToCurrentFolder, 'index.ts'));
 
-  if (doesIndexFileExist) {
+  if (doesIndexFileExist && !isIndexFileUsedForExport(path.join(pathToCurrentFolder, 'index.ts'))) {
     // check if the index file exists and if it is used only for only for exporting then re-rewrite
-    if (!isIndexFileUsedForExport(path.join(pathToCurrentFolder, 'index.ts'))) {
-      infoLogger(`Index file already exists at /${currentFolder}`);
-      return;
-    }
+    infoLogger(`Index file already exists at /${currentFolder}`);
+    return;
   }
 
   // create index file: with file names and exports from files
