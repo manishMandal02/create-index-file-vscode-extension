@@ -30,7 +30,7 @@
   },
   "bugs": {
     "url": "https://github.com/manishMandal02/create-index-vscode-extension/issues",
-    "email": "hello@manishmandal.me"
+    "email": "hello@manishmandal.com"
   },
   "homepage": "https://github.com/manishMandal02/create-index-vscode-extension/blob/master/README.md",
   "main": "./dist/extension.js",
