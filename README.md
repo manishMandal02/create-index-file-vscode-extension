@@ -34,7 +34,7 @@ Add extension to VS code
     4. Click Install
 ```
 
-VS code marketplace link: https://marketplace.visualstudio.com/vscode
+VS code marketplace link: https://marketplace.visualstudio.com/items?itemName=manishMandal.generate-index-file
 
 ## Run Locally
 
